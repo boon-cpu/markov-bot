@@ -1,6 +1,7 @@
 import CookiecordClient, { command, Module } from "cookiecord";
 import { Message, Permissions } from "discord.js";
 import { Message as MessageModel } from "../Message.model";
+import { Server } from "../Server.model";
 
 export default class Delete extends Module {
   constructor(client: CookiecordClient) {
@@ -17,8 +18,15 @@ export default class Delete extends Module {
       return message.reply("you do not have permission to use this command!");
     }
 
+    const server = await Server.findOne({ id: message.guild.id });
+
+    if (!server) {
+      await message.reply("somethign went wrong");
+      return;
+    }
+
     await MessageModel.deleteMany({
-      server: message.guild.id,
+      server: server._id,
     });
 
     await message.reply("done.");
