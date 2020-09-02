@@ -53,6 +53,13 @@ client.on("message", async (message) => {
 
   const guildOptions = await getGuild();
 
+  if (message.content.split(" ").length < 2) return;
+
+  await new Message({
+    content: message.content,
+    server: guildOptions._id,
+  }).save();
+
   if (Math.random() * 100 <= guildOptions.probability) {
     if (!message.guild) return;
     const output = await ngram(message.guild.id, { isTriggered: false });
@@ -66,13 +73,6 @@ client.on("message", async (message) => {
       await message.channel.stopTyping(true);
     }, 3000);
   }
-
-  if (message.content.split(" ").length <= 2) return;
-
-  await new Message({
-    content: message.content,
-    server: guildOptions._id,
-  }).save();
 });
 
 client.login(process.env.TOKEN!).then();
