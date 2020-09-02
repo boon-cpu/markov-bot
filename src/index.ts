@@ -1,4 +1,4 @@
-import CookiecordClient from "cookiecord";
+import CookiecordClient, {HelpModule} from "cookiecord";
 import dotenv from "dotenv-safe";
 dotenv.config();
 
@@ -23,6 +23,8 @@ const client = new CookiecordClient({
 
 client.loadModulesFromFolder("src/modules");
 client.reloadModulesFromFolder("src/modules");
+
+client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
   if (
