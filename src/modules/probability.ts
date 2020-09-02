@@ -1,5 +1,12 @@
 import { Message } from "discord.js";
-import { command, default as CookiecordClient, Module } from "cookiecord";
+
+import {
+  command,
+  default as CookiecordClient,
+  Module,
+  optional,
+} from "cookiecord";
+
 import { Server } from "../Server.model";
 
 export default class Probability extends Module {
@@ -11,7 +18,7 @@ export default class Probability extends Module {
     aliases: ["prob", "probability", "setprob"],
     description: "Triggers the markov chain",
   })
-  async setprobability(message: Message, probability?: number) {
+  async setprobability(message: Message, @optional probability?: number) {
     if (!message.guild) return;
 
     const server = await Server.findOne({ id: message.guild.id });
