@@ -36,6 +36,7 @@ client.on("message", async (message) => {
   const getGuild = async () => {
     const { id } = (message.channel as TextChannel).guild;
     const model = await Server.findOne({ id });
+
     if (!model) {
       return await new Server({ id }).save();
     }
@@ -52,7 +53,6 @@ client.on("message", async (message) => {
     if (output === "") return;
 
     message.channel.startTyping();
-    console.log("Resolved!");
 
     setTimeout(async () => {
       await message.channel.send(output);
