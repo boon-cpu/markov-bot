@@ -25,7 +25,9 @@ export default class Probability extends Module {
     if (!server) return;
 
     if (!probability) {
-      await message.channel.send(`currently set to: ${server.probability}`);
+      await message.channel.send(
+        `Probability currently set to: \`${server.probability}%\``
+      );
       return;
     }
 
