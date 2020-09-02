@@ -11,10 +11,10 @@ export async function wordsAt(guild: Snowflake) {
 
   const _messages = await Message.find({ server: server._id });
 
-  const messages = _messages.map((message) => {
+  return _messages.map((message) => {
     return message.content.split(" ")[0];
   });
-  return messages;
+}
 
 export async function ngram(
   guild: Snowflake,
