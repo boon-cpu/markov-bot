@@ -1,13 +1,13 @@
 import CookiecordClient, { HelpModule } from "cookiecord";
 
 import dotenv from "dotenv-safe";
-dotenv.config();
-
 import { TextChannel } from "discord.js";
 import { Message } from "./Message.model";
 import { Server } from "./Server.model";
 import { ngram } from "./utils";
 import { connect } from "mongoose";
+
+dotenv.config();
 
 const prefix = "w!";
 
@@ -29,14 +29,17 @@ client.reloadModulesFromFolder("src/modules");
 client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
-  if (message.channel.type === "dm" || message.author.id === client.user?.id) {
+  const isDm = message.channel.type === "dm";
+  const isSelf = message.author.id === client.user!.id;
+
+  if (isDm || isSelf || !message.guild) {
     return;
   }
 
-  if (
-    process.env.MESSAGE_SAFE_MODE === "on" &&
-    message.content.startsWith(prefix)
-  ) {
+  const usingSafeMode = process.env.MESSAGE_SAFE_MODE === "on";
+  const startsWithPrefix = message.content.startsWith(prefix);
+
+  if (usingSafeMode && startsWithPrefix) {
     return;
   }
 
