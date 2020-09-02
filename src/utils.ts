@@ -44,6 +44,7 @@ export async function ngram(
       );
     });
   });
+
   return await markov(guild, ngrams, isTriggered);
 }
 
@@ -79,5 +80,6 @@ export async function markov(
       break;
     }
   }
+
   return result;
 }
