@@ -29,7 +29,11 @@ client.reloadModulesFromFolder("src/modules");
 client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
-  if (message.channel.type === "dm" || message.author.id === client.user!.id) {
+  if (
+    message.channel.type === "dm" ||
+    message.author.id === client.user!.id ||
+    !message.guild
+  ) {
     return;
   }
 
@@ -53,8 +57,7 @@ client.on("message", async (message) => {
 
   const guildOptions = await getGuild();
 
-  if (Math.random() * 100 <= guildOptions.probability) {
-    if (!message.guild) return;
+  if (guildOptions.probability >= Math.random() * 100) {
     const output = await ngram(message.guild.id, { isTriggered: false });
 
     if (output === "" || output === " ") return;
