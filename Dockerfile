@@ -1,5 +1,9 @@
 FROM node:current-alpine
-WORKDIR /
+
+WORKDIR /app
+
 COPY . .
-RUN npm install
-CMD ["npm", "start"]
+
+RUN yarn
+
+CMD ["yarn", "start"]

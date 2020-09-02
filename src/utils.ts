@@ -71,7 +71,7 @@ export async function markov(
         ? currentGram
         : possibilities[Math.floor(Math.random() * possibilities.length)];
     result += next + " ";
-    console.log(result);
+
     arrayGram = result.split(" ");
     currentGram = arrayGram[arrayGram.length - 2];
     currentGram.slice(0, result.length - 1);
