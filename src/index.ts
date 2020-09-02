@@ -9,6 +9,8 @@ import { Server } from "./Server.model";
 import { ngram } from "./utils";
 import { connect } from "mongoose";
 
+const prefix = "w!";
+
 connect(process.env.MONGO_URI!, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -18,7 +20,7 @@ connect(process.env.MONGO_URI!, {
 
 const client = new CookiecordClient({
   botAdmins: process.env.BOT_ADMINS!.split(","),
-  prefix: "w!",
+  prefix,
 });
 
 client.loadModulesFromFolder("src/modules");
@@ -27,12 +29,9 @@ client.reloadModulesFromFolder("src/modules");
 client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
-  if (
-    message.channel.type === "dm" ||
-    message.author.id === "748916794995114035" ||
-    message.content.startsWith("w!")
-  )
+  if (message.channel.type === "dm" && message.author.id !== client.user?.id) {
     return;
+  }
 
   const getGuild = async () => {
     const { id } = (message.channel as TextChannel).guild;
