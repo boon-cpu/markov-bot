@@ -29,7 +29,8 @@ client.registerModule(HelpModule);
 client.on("message", async (message) => {
   if (
     message.channel.type === "dm" ||
-    message.author.id === "748916794995114035"
+    message.author.id === "748916794995114035" ||
+    message.content.startsWith("w!")
   )
     return;
 
