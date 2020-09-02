@@ -65,9 +65,6 @@ client.on("message", async (message) => {
       await message.channel.send(output);
       await message.channel.stopTyping(true);
     }, 3000);
-
-    // TODO: ~~Send our markov here for funny!~~
-    // TODO: ~~I must say sir this does seem to be funny!~~ [closed - marked as duplicate]
   }
 
   if (message.content.split(" ").length <= 2) return;
