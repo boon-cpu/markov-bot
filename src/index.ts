@@ -57,12 +57,12 @@ client.on("message", async (message) => {
     if (!message.guild) return;
     const output = await ngram(message.guild.id, { isTriggered: true });
 
-    if (output === "") return;
+    if (output === "" || output === " ") return;
 
     message.channel.startTyping();
 
     setTimeout(async () => {
-      await message.channel.send(output).catch();
+      await message.channel.send(output);
       await message.channel.stopTyping(true);
     }, 1000);
 
