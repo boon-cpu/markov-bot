@@ -1,4 +1,4 @@
-import CookiecordClient, {HelpModule} from "cookiecord";
+import CookiecordClient, { HelpModule } from "cookiecord";
 import dotenv from "dotenv-safe";
 dotenv.config();
 
@@ -47,7 +47,7 @@ client.on("message", async (message) => {
 
   if (Math.random() * 100 <= guildOptions.probability) {
     if (!message.guild) return;
-    const output = await ngram(message.guild.id, true);
+    const output = await ngram(message.guild.id, { isTriggered: true });
     if (output == "") return;
     message.channel.startTyping();
     setTimeout(async () => {
