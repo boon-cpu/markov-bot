@@ -20,6 +20,6 @@ export default class Trigger extends Module {
       return;
     }
 
-    await message.channel.send(output);
+    await message.channel.send(output).catch();
   }
 }

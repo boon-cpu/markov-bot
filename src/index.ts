@@ -55,7 +55,7 @@ client.on("message", async (message) => {
     message.channel.startTyping();
 
     setTimeout(async () => {
-      await message.channel.send(output);
+      await message.channel.send(output).catch();
       await message.channel.stopTyping(true);
     }, 1000);
 
