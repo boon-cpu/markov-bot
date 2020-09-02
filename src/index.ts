@@ -33,6 +33,13 @@ client.on("message", async (message) => {
     return;
   }
 
+  if (
+    process.env.MESSAGE_SAFE_MODE === "on" &&
+    message.content.startsWith(prefix)
+  ) {
+    return;
+  }
+
   const getGuild = async () => {
     const { id } = (message.channel as TextChannel).guild;
     const model = await Server.findOne({ id });
