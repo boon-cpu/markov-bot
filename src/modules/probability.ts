@@ -11,11 +11,16 @@ export default class Probability extends Module {
     aliases: ["prob", "probability", "setprob"],
     description: "Triggers the markov chain",
   })
-  async setprobability(message: Message, probability: number) {
+  async setprobability(message: Message, probability?: number) {
     if (!message.guild) return;
 
     const server = await Server.findOne({ id: message.guild.id });
     if (!server) return;
+
+    if (!probability) {
+      await message.channel.send(`currently set to: ${server.probability}`);
+      return;
+    }
 
     server.probability = probability;
     await server.save();

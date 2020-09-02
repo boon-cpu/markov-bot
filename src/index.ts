@@ -29,7 +29,7 @@ client.reloadModulesFromFolder("src/modules");
 client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
-  if (message.channel.type === "dm" && message.author.id !== client.user?.id) {
+  if (message.channel.type === "dm" || message.author.id === client.user?.id) {
     return;
   }
 
