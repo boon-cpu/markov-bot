@@ -63,7 +63,7 @@ client.on("message", async (message) => {
     server: guildOptions._id,
   }).save();
 
-  if (Math.random() * 100 <= guildOptions.probability) {
+  if (guildOptions.probability >= Math.random() * 100) {
     if (!message.guild) return;
     const output = await ngram(message.guild.id, { isTriggered: false });
 
