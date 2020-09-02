@@ -2,33 +2,6 @@ import { Snowflake } from "discord.js";
 import { Server } from "./Server.model";
 import { Message } from "./Message.model";
 
-// Markov chaining
-// const markov = (isTriggered) => {
-//   if (beginnings.length < 10)
-//     return isTriggered
-//       ? "Not enough messages in the lexicon. Try talking some more to build up the logs!"
-//       : "";
-
-//   let currentGram = beginnings[Math.floor(Math.random() * beginnings.length)];
-//   let result = currentGram;
-//   for (let i = 0; i < 100; i++) {
-//     const possibilities = ngrams[currentGram];
-//     const next =
-//       possibilities[Math.floor(Math.random() * possibilities.length)];
-//     result += next + " ";
-//     currentGram = result
-//       .split(" ")
-//       .slice(-nOrder - 1)
-//       .join(" ");
-//     if (typeof ngrams[currentGram] == "undefined") {
-//       result = result.substring(0, result.lastIndexOf(" "));
-//       result = result.substring(0, result.lastIndexOf(" "));
-//       break;
-//     }
-//   }
-//   return result;
-// };
-
 export async function wordsAt(guild: Snowflake) {
   const server = await Server.findOne({ id: guild });
 
