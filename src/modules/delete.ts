@@ -3,7 +3,7 @@ import CookiecordClient, { Module, command } from "cookiecord";
 import { Message, Permissions } from "discord.js";
 import { Message as MessageModel } from "../Message.model";
 
-export default class Probability extends Module {
+export default class Delete extends Module {
   constructor(client: CookiecordClient) {
     super(client);
   }
