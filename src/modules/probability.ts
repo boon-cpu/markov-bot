@@ -24,7 +24,7 @@ export default class Probability extends Module {
     const server = await Server.findOne({ id: message.guild.id });
     if (!server) return;
 
-    if (!probability) {
+    if (!probability && probability !== 0) {
       await message.channel.send(
         `Probability currently set to: \`${server.probability}%\``
       );
