@@ -66,8 +66,11 @@ export async function markov(
   for (let i = 0; i < 30; i++) {
     const possibilities = ngrams[currentGram];
     const next =
-      possibilities[Math.floor(Math.random() * possibilities.length)];
+      i === 0
+        ? currentGram
+        : possibilities[Math.floor(Math.random() * possibilities.length)];
     result += next + " ";
+    console.log(result);
     arrayGram = result.split(" ");
     currentGram = arrayGram[arrayGram.length - 2];
     currentGram.slice(0, result.length - 1);
