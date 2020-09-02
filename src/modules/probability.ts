@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message } from "discord.js";
 import { command, default as CookiecordClient, Module } from "cookiecord";
 import { Server } from "../Server.model";
 

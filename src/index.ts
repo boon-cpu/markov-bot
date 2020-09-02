@@ -1,4 +1,5 @@
-import CookiecordClient, {HelpModule} from "cookiecord";
+import CookiecordClient, { HelpModule } from "cookiecord";
+
 import dotenv from "dotenv-safe";
 dotenv.config();
 
@@ -7,7 +8,6 @@ import { Message } from "./Message.model";
 import { Server } from "./Server.model";
 import { ngram } from "./utils";
 import { connect } from "mongoose";
-import { start } from "repl";
 
 connect(process.env.MONGO_URI!, {
   useNewUrlParser: true,
@@ -47,18 +47,24 @@ client.on("message", async (message) => {
 
   if (Math.random() * 100 <= guildOptions.probability) {
     if (!message.guild) return;
-    const output = await ngram(message.guild.id, true);
-    if (output == "") return;
+    const output = await ngram(message.guild.id, { isTriggered: true });
+
+    if (output === "") return;
+
     message.channel.startTyping();
+    console.log("Resolved!");
+
     setTimeout(async () => {
       await message.channel.send(output);
-      message.channel.stopTyping();
+      await message.channel.stopTyping(true);
     }, 1000);
+
     // TODO: ~~Send our markov here for funny!~~
     // TODO: ~~I must say sir this does seem to be funny!~~ [closed - marked as duplicate]
   }
 
   if (message.content.split(" ").length <= 2) return;
+
   await new Message({
     content: message.content,
     server: guildOptions._id,
