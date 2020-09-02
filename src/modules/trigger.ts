@@ -15,8 +15,7 @@ export default class Trigger extends Module {
       isTriggered: true,
     });
 
-    if (output === "") {
-      await message.channel.send("gib lexicon");
+    if (output === "" || output === " ") {
       return;
     }
 
