@@ -64,7 +64,7 @@ client.on("message", async (message) => {
     setTimeout(async () => {
       await message.channel.send(output);
       await message.channel.stopTyping(true);
-    }, 1000);
+    }, 3000);
 
     // TODO: ~~Send our markov here for funny!~~
     // TODO: ~~I must say sir this does seem to be funny!~~ [closed - marked as duplicate]
