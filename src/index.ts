@@ -1,13 +1,13 @@
 import CookiecordClient, { HelpModule } from "cookiecord";
 
 import dotenv from "dotenv-safe";
-dotenv.config();
-
 import { TextChannel } from "discord.js";
 import { Message } from "./Message.model";
 import { Server } from "./Server.model";
 import { ngram } from "./utils";
 import { connect } from "mongoose";
+
+dotenv.config();
 
 const prefix = "w!";
 
@@ -29,7 +29,7 @@ client.reloadModulesFromFolder("src/modules");
 client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
-  if (message.channel.type === "dm" || message.author.id === client.user?.id) {
+  if (message.channel.type === "dm" || message.author.id === client.user!.id) {
     return;
   }
 
