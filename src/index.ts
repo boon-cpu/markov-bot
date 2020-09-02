@@ -29,18 +29,17 @@ client.reloadModulesFromFolder("src/modules");
 client.registerModule(HelpModule);
 
 client.on("message", async (message) => {
-  if (
-    message.channel.type === "dm" ||
-    message.author.id === client.user!.id ||
-    !message.guild
-  ) {
+  const isDm = message.channel.type === "dm";
+  const isSelf = message.author.id === client.user!.id;
+
+  if (isDm || isSelf || !message.guild) {
     return;
   }
 
-  if (
-    process.env.MESSAGE_SAFE_MODE === "on" &&
-    message.content.startsWith(prefix)
-  ) {
+  const usingSafeMode = process.env.MESSAGE_SAFE_MODE === "on";
+  const startsWithPrefix = message.content.startsWith(prefix);
+
+  if (usingSafeMode && startsWithPrefix) {
     return;
   }
 
