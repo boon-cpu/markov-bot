@@ -9,6 +9,7 @@
     "@types/node": "^14.6.2",
     "@types/ws": "^7.2.1",
     "cookiecord": "cookiecord/cookiecord#5/head",
+    "discord.js": "^12.3.1",
     "dotenv-safe": "^8.2.0",
     "mongoose": "^5.10.2",
     "ts-node": "^8.6.2",
