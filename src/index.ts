@@ -56,12 +56,17 @@ client.on("message", async (message) => {
 
   const guildOptions = await getGuild();
 
-  if (message.content.split(" ").length < 2) return;
+  if (guildOptions.channel !== message.channel.id) return;
 
-  await new Message({
-    content: message.content,
-    server: guildOptions._id,
-  }).save();
+  const saveMessage = async () => {
+    if (message.content.split(" ").length < 2) return;
+
+    await new Message({
+      content: message.content,
+      server: guildOptions._id,
+    }).save();
+  };
+  saveMessage();
 
   if (guildOptions.probability >= Math.random() * 100) {
     if (!message.guild) return;

@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, Permissions } from "discord.js";
 
 import {
   command,
@@ -21,8 +21,16 @@ export default class Probability extends Module {
   async setprobability(message: Message, @optional probability?: number) {
     if (!message.guild) return;
 
+    if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+      return message.reply("you do not have permission to use this command!");
+    }
+
     const server = await Server.findOne({ id: message.guild.id });
-    if (!server) return;
+
+    if (!server) {
+      await message.reply("somethign went wrong");
+      return;
+    }
 
     if (!probability && probability !== 0) {
       await message.channel.send(

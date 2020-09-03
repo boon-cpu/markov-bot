@@ -1,17 +1,17 @@
 import CookiecordClient, { command, Module } from "cookiecord";
 import { Message, Permissions } from "discord.js";
-import { Message as MessageModel } from "../Message.model";
 import { Server } from "../Server.model";
 
-export default class Delete extends Module {
+export default class Channel extends Module {
   constructor(client: CookiecordClient) {
     super(client);
   }
 
   @command({
+    aliases: ["setchannel"],
     description: "deletes the dataset",
   })
-  async deletelogs(message: Message) {
+  async channel(message: Message) {
     if (!message.guild) return;
 
     if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
@@ -25,10 +25,9 @@ export default class Delete extends Module {
       return;
     }
 
-    await MessageModel.deleteMany({
-      server: server._id,
-    });
+    server.channel = message.channel.id;
+    server.save();
 
-    await message.reply("done.");
+    message.channel.send("Binded to this channel!");
   }
 }
