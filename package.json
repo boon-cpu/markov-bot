@@ -18,5 +18,8 @@
   "scripts": {
     "start": "ts-node src"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.1.1"
+  }
 }
