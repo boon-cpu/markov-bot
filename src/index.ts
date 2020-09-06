@@ -64,9 +64,29 @@ client.on("message", async (message) => {
     await new Message({
       content: message.content,
       server: guildOptions._id,
+      date: new Date(),
     }).save();
   };
-  saveMessage();
+  const countServer = async () => {
+    const { id } = (message.channel as TextChannel).guild;
+    const server = await Server.findOne({ id: id });
+    const messages = await Message.find({ server: server?._id });
+    if (messages.length <= 10) {
+      saveMessage();
+    } else {
+      const sorted = await Message.find({ server: server?._id }).sort({
+        date: 1,
+      });
+      const id: String = sorted[0]._id;
+      Message.deleteOne({ _id: id })
+        .then()
+        .catch((err) => {
+          console.log(err);
+        });
+      await saveMessage();
+    }
+  };
+  countServer();
 
   if (guildOptions.probability >= Math.random() * 100) {
     if (!message.guild) return;
