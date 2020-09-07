@@ -9,7 +9,8 @@ export default class Delete extends Module {
   }
 
   @command({
-    description: "deletes the dataset",
+    "aliases": ["delete"],
+    description: "Deletes the dataset",
   })
   async deletelogs(message: Message) {
     if (!message.guild) return;

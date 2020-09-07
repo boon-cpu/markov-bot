@@ -9,7 +9,7 @@ export default class Channel extends Module {
 
   @command({
     aliases: ["setchannel"],
-    description: "deletes the dataset",
+    description: "Binds bot to current channel",
   })
   async channel(message: Message) {
     if (!message.guild) return;
