@@ -1,7 +1,7 @@
 import CookiecordClient, { HelpModule } from "cookiecord";
 
 import dotenv from "dotenv-safe";
-import { TextChannel } from "discord.js";
+import { TextChannel, Message as Msg } from "discord.js";
 import { Message } from "./Message.model";
 import { Server } from "./Server.model";
 import { ngram } from "./utils";
@@ -28,7 +28,7 @@ client.reloadModulesFromFolder("src/modules");
 
 client.registerModule(HelpModule);
 
-client.on("message", async (message) => {
+client.on("message", async (message: Msg) => {
   const isDm = message.channel.type === "dm";
   const isSelf = message.author.id === client.user!.id;
 
@@ -72,7 +72,7 @@ client.on("message", async (message) => {
     const server = await Server.findOne({ id: id });
     const messages = await Message.find({ server: server?._id });
     if (messages.length <= 10) {
-      saveMessage();
+      await saveMessage();
     } else {
       const sorted = await Message.find({ server: server?._id }).sort({
         date: 1,
@@ -86,7 +86,7 @@ client.on("message", async (message) => {
       await saveMessage();
     }
   };
-  countServer();
+  await countServer();
 
   if (guildOptions.probability >= Math.random() * 100) {
     if (!message.guild) return;
