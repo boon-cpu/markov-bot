@@ -81,5 +81,6 @@ export async function markov(
     }
   }
 
+  result = result.length >= 2000 ? result.substring(0, 1999) : result;
   return result;
 }

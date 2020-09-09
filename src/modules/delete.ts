@@ -9,7 +9,7 @@ export default class Delete extends Module {
   }
 
   @command({
-    "aliases": ["delete"],
+    aliases: ["delete"],
     description: "Deletes the dataset",
   })
   async deletelogs(message: Message) {
