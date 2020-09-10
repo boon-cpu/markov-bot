@@ -16,7 +16,7 @@ export default class Probability extends Module {
 
   @command({
     aliases: ["prob", "probability", "setprob"],
-    description: "Sets the probabaility of messages",
+    description: "Sets the probability of messages",
   })
   async setprobability(message: Message, @optional probability?: number) {
     if (!message.guild) return;
