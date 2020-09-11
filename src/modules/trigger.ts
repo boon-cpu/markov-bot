@@ -27,6 +27,17 @@ export default class Trigger extends Module {
     }).save();
   }
 
+  private static async getGuild(message: Message) {
+    const { id } = (message.channel as TextChannel).guild;
+    const model = await Server.findOne({ id });
+
+    if (!model) {
+      return await new Server({ id }).save();
+    }
+
+    return model;
+  }
+
   @command({ aliases: ["trig"], description: "Triggers the markov chain" })
   async trigger(message: Message) {
     if (!message.guild) return;
@@ -58,18 +69,7 @@ export default class Trigger extends Module {
       return;
     }
 
-    const getGuild = async () => {
-      const { id } = (message.channel as TextChannel).guild;
-      const model = await Server.findOne({ id });
-
-      if (!model) {
-        return await new Server({ id }).save();
-      }
-
-      return model;
-    };
-
-    const guildOptions = await getGuild();
+    const guildOptions = await Trigger.getGuild(message);
 
     if (guildOptions.channel !== message.channel.id) return;
     if (guildOptions.exclude.includes(message.author.id)) return;
