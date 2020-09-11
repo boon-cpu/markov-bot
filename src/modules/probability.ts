@@ -1,11 +1,6 @@
 import { Message, Permissions } from "discord.js";
 
-import {
-  command,
-  default as CookiecordClient,
-  Module,
-  optional,
-} from "cookiecord";
+import CookiecordClient, { command, Module, optional } from "cookiecord";
 
 import { Server } from "../Server.model";
 

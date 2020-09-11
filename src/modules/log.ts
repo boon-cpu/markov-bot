@@ -1,7 +1,7 @@
 import fs from "fs";
-import path, { dirname } from "path";
+import path from "path";
 import { Message, Permissions } from "discord.js";
-import { command, default as CookiecordClient, Module } from "cookiecord";
+import CookiecordClient, { command, Module } from "cookiecord";
 import { Message as MessageModel } from "../Message.model";
 import { Server } from "../Server.model";
 
@@ -32,7 +32,7 @@ export default class Logs extends Module {
       id: message.guild.id,
     });
 
-    if (!guild) return message.channel.send("lol code brokecd");
+    if (!guild) return message.channel.send("lol code broke");
 
     const _messages = await MessageModel.find({
       server: guild._id,

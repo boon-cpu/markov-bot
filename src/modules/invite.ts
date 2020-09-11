@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { command, default as CookiecordClient, Module } from "cookiecord";
+import CookiecordClient, { command, Module } from "cookiecord";
 
 export default class Invite extends Module {
   constructor(client: CookiecordClient) {
