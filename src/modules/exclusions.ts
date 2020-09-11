@@ -1,6 +1,11 @@
 import { Message, Permissions } from "discord.js";
 
-import { command, default as CookiecordClient, Module } from "cookiecord";
+import {
+  command,
+  CommonInhibitors,
+  default as CookiecordClient,
+  Module,
+} from "cookiecord";
 
 import { Server } from "../Server.model";
 
@@ -12,13 +17,10 @@ export default class Exclusions extends Module {
   @command({
     aliases: ["exc"],
     description: "Excludes player from being recorded",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
   })
   async exclude(message: Message) {
     if (!message.guild) return;
-
-    if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-      return message.reply("you do not have permission to use this command!");
-    }
 
     const server = await Server.findOne({ id: message.guild.id });
 
@@ -42,13 +44,10 @@ export default class Exclusions extends Module {
   @command({
     aliases: ["inc"],
     description: "Removes user from exclude list",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
   })
   async include(message: Message) {
     if (!message.guild) return;
-
-    if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-      return message.reply("you do not have permission to use this command!");
-    }
 
     const server = await Server.findOne({ id: message.guild.id });
 
@@ -74,13 +73,10 @@ export default class Exclusions extends Module {
   @command({
     aliases: ["incall", "incAll", "includeall"],
     description: "Removes all users from exclude list",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
   })
   async includeAll(message: Message) {
     if (!message.guild) return;
-
-    if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-      return message.reply("you do not have permission to use this command!");
-    }
 
     const server = await Server.findOne({ id: message.guild.id });
 

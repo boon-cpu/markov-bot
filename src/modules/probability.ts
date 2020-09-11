@@ -2,6 +2,7 @@ import { Message, Permissions } from "discord.js";
 
 import {
   command,
+  CommonInhibitors,
   default as CookiecordClient,
   Module,
   optional,
@@ -17,13 +18,10 @@ export default class Probability extends Module {
   @command({
     aliases: ["prob", "probability", "setprob"],
     description: "Sets the probability of messages",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
   })
   async setprobability(message: Message, @optional probability?: number) {
     if (!message.guild) return;
-
-    if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-      return message.reply("you do not have permission to use this command!");
-    }
 
     const server = await Server.findOne({ id: message.guild.id });
 

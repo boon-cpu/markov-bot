@@ -1,4 +1,8 @@
-import CookiecordClient, { command, Module } from "cookiecord";
+import CookiecordClient, {
+  command,
+  CommonInhibitors,
+  Module,
+} from "cookiecord";
 import { Message, Permissions } from "discord.js";
 import { Message as MessageModel } from "../Message.model";
 import { Server } from "../Server.model";
@@ -11,13 +15,10 @@ export default class Delete extends Module {
   @command({
     aliases: ["delete"],
     description: "Deletes the dataset",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
   })
   async deletelogs(message: Message) {
     if (!message.guild) return;
-
-    if (!message.member?.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-      return message.reply("you do not have permission to use this command!");
-    }
 
     const server = await Server.findOne({ id: message.guild.id });
 
