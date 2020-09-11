@@ -46,7 +46,7 @@ export default class Trigger extends Module {
       isTriggered: true,
     });
 
-    if (output === "" || output === " ") {
+    if (output.trim() === "") {
       return;
     }
 
