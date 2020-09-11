@@ -48,7 +48,7 @@ export default class Logs extends Module {
     );
     await fs.writeFileSync(filename, messages.join("\n"));
 
-    await message.channel.send({
+    await message.author.send({
       files: [filename],
     });
     fs.unlinkSync(filename);
