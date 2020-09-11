@@ -8,13 +8,23 @@ import {
 } from "cookiecord";
 
 import { config, ngram } from "../utils";
-import { Server } from "../Server.model";
+import { IServer, Server } from "../Server.model";
 
 import { Message as MessageModel } from "../Message.model";
 
 export default class Trigger extends Module {
   constructor(client: CookiecordClient) {
     super(client);
+  }
+
+  private static async saveMessage(message: Message, guildOptions: IServer) {
+    if (message.content.split(" ").length < 2) return;
+
+    await new MessageModel({
+      content: message.content,
+      server: guildOptions._id,
+      date: new Date(),
+    }).save();
   }
 
   @command({ aliases: ["trig"], description: "Triggers the markov chain" })
@@ -64,35 +74,22 @@ export default class Trigger extends Module {
     if (guildOptions.channel !== message.channel.id) return;
     if (guildOptions.exclude.includes(message.author.id)) return;
 
-    const saveMessage = async () => {
-      if (message.content.split(" ").length < 2) return;
-
-      await new MessageModel({
-        content: message.content,
-        server: guildOptions._id,
-        date: new Date(),
-      }).save();
-    };
-
     const { id } = (message.channel as TextChannel).guild;
     const server = await Server.findOne({ id: id });
     const messages = await MessageModel.find({ server: server?._id });
 
     if (messages.length <= 1000) {
-      await saveMessage();
+      await Trigger.saveMessage(message, guildOptions);
     } else {
       const sorted = await MessageModel.find({ server: server?._id }).sort({
         date: 1,
       });
 
       const id: String = sorted[0]._id;
-      MessageModel.deleteOne({ _id: id })
-        .then()
-        .catch((err) => {
-          console.log(err);
-        });
 
-      await saveMessage();
+      await MessageModel.deleteOne({ _id: id });
+
+      await Trigger.saveMessage(message, guildOptions);
     }
 
     if (guildOptions.probability >= Math.random() * 100) {

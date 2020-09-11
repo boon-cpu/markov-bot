@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Snowflake } from "discord.js";
 
-interface IServer extends mongoose.Document {
+export interface IServer extends mongoose.Document {
   id: Snowflake;
   probability: number;
   channel: Snowflake;
