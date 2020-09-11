@@ -1,18 +1,36 @@
-import { Message, Permissions } from "discord.js";
-
-import {
+import CookiecordClient, {
   command,
   CommonInhibitors,
-  default as CookiecordClient,
   Module,
   optional,
 } from "cookiecord";
-
+import { Message } from "discord.js";
 import { Server } from "../Server.model";
 
-export default class Probability extends Module {
+export default class GuildOptions extends Module {
   constructor(client: CookiecordClient) {
     super(client);
+  }
+
+  @command({
+    aliases: ["setchannel"],
+    description: "Binds bot to current channel",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
+  })
+  async channel(message: Message) {
+    if (!message.guild) return;
+
+    const server = await Server.findOne({ id: message.guild.id });
+
+    if (!server) {
+      await message.reply("somethign went wrong");
+      return;
+    }
+
+    server.channel = message.channel.id;
+    server.save();
+
+    message.channel.send("Binded to this channel!");
   }
 
   @command({

@@ -1,18 +1,39 @@
-import fs from "fs";
-import path from "path";
-import { Message, Permissions } from "discord.js";
-import {
+import CookiecordClient, {
   command,
   CommonInhibitors,
-  default as CookiecordClient,
   Module,
 } from "cookiecord";
-import { Message as MessageModel } from "../Message.model";
+import { Message } from "discord.js";
 import { Server } from "../Server.model";
+import { Message as MessageModel } from "../Message.model";
+import path from "path";
+import fs from "fs";
 
 export default class Logs extends Module {
   constructor(client: CookiecordClient) {
     super(client);
+  }
+
+  @command({
+    aliases: ["delete"],
+    description: "Deletes the dataset",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
+  })
+  async deletelogs(message: Message) {
+    if (!message.guild) return;
+
+    const server = await Server.findOne({ id: message.guild.id });
+
+    if (!server) {
+      await message.reply("somethign went wrong");
+      return;
+    }
+
+    await MessageModel.deleteMany({
+      server: server._id,
+    });
+
+    await message.reply("done.");
   }
 
   @command({

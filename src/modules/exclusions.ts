@@ -1,4 +1,4 @@
-import { Message, Permissions } from "discord.js";
+import { Message } from "discord.js";
 
 import {
   command,
