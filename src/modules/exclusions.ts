@@ -32,6 +32,12 @@ export default class Exclusions extends Module {
     const member = message.mentions.users.first();
 
     if (!member) {
+      const excluded = server.exclude.map((user) => {
+        return `<@${user}>`;
+      });
+      await message.reply(
+        "Current excluded members are: " + excluded.join(", ")
+      );
       return;
     }
 
