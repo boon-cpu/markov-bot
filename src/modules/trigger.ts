@@ -85,10 +85,7 @@ export default class Trigger extends Module {
         date: 1,
       });
 
-      const id: String = sorted[0]._id;
-
-      await MessageModel.deleteOne({ _id: id });
-
+      await MessageModel.deleteOne({ _id: sorted[0]._id });
       await Trigger.saveMessage(message, guildOptions);
     }
 
