@@ -57,6 +57,7 @@ client.on("message", async (message: Msg) => {
   const guildOptions = await getGuild();
 
   if (guildOptions.channel !== message.channel.id) return;
+  if (guildOptions.exclude.includes(message.author.id)) return;
 
   const saveMessage = async () => {
     if (message.content.split(" ").length < 2) return;
