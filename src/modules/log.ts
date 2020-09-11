@@ -1,5 +1,5 @@
 import fs from "fs";
-import path, { dirname } from "path";
+import path from "path";
 import { Message, Permissions } from "discord.js";
 import {
   command,
@@ -34,7 +34,7 @@ export default class Logs extends Module {
       id: message.guild.id,
     });
 
-    if (!guild) return message.channel.send("lol code brokecd");
+    if (!guild) return message.channel.send("lol code broke");
 
     const _messages = await MessageModel.find({
       server: guild._id,
