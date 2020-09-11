@@ -74,30 +74,26 @@ export default class Trigger extends Module {
       }).save();
     };
 
-    const countServer = async () => {
-      const { id } = (message.channel as TextChannel).guild;
-      const server = await Server.findOne({ id: id });
-      const messages = await MessageModel.find({ server: server?._id });
+    const { id } = (message.channel as TextChannel).guild;
+    const server = await Server.findOne({ id: id });
+    const messages = await MessageModel.find({ server: server?._id });
 
-      if (messages.length <= 1000) {
-        await saveMessage();
-      } else {
-        const sorted = await MessageModel.find({ server: server?._id }).sort({
-          date: 1,
+    if (messages.length <= 1000) {
+      await saveMessage();
+    } else {
+      const sorted = await MessageModel.find({ server: server?._id }).sort({
+        date: 1,
+      });
+
+      const id: String = sorted[0]._id;
+      MessageModel.deleteOne({ _id: id })
+        .then()
+        .catch((err) => {
+          console.log(err);
         });
 
-        const id: String = sorted[0]._id;
-        MessageModel.deleteOne({ _id: id })
-          .then()
-          .catch((err) => {
-            console.log(err);
-          });
-
-        await saveMessage();
-      }
-    };
-
-    await countServer();
+      await saveMessage();
+    }
 
     if (guildOptions.probability >= Math.random() * 100) {
       if (!message.guild) return;
