@@ -2,6 +2,10 @@ import { Snowflake } from "discord.js";
 import { Server } from "./Server.model";
 import { Message } from "./Message.model";
 
+export const config = {
+  prefix: "w!",
+} as const;
+
 export async function wordsAt(guild: Snowflake) {
   const server = await Server.findOne({ id: guild });
 
