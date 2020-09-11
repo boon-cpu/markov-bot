@@ -1,6 +1,5 @@
 import { Message } from "discord.js";
 import { command, default as CookiecordClient, Module } from "cookiecord";
-import { ngram } from "../utils";
 
 export default class Invite extends Module {
   constructor(client: CookiecordClient) {
