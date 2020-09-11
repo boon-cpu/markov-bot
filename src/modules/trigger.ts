@@ -1,11 +1,6 @@
 import { Message, TextChannel } from "discord.js";
 
-import {
-  command,
-  default as CookiecordClient,
-  listener,
-  Module,
-} from "cookiecord";
+import CookiecordClient, { command, listener, Module } from "cookiecord";
 
 import { config, ngram } from "../utils";
 import { IServer, Server } from "../Server.model";
