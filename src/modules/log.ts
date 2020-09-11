@@ -40,7 +40,10 @@ export default class Logs extends Module {
 
     const messages = _messages.map((message) => message.content);
 
-    const filename = path.join(__dirname, `${message.guild.id}-messages.txt`);
+    const filename = path.join(
+      __dirname,
+      `${message.guild.id}-${new Date().getTime()}-messages.txt`
+    );
     await fs.writeFileSync(filename, messages.join("\n"));
 
     await message.channel.send({

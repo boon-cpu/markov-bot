@@ -71,7 +71,7 @@ client.on("message", async (message: Msg) => {
     const { id } = (message.channel as TextChannel).guild;
     const server = await Server.findOne({ id: id });
     const messages = await Message.find({ server: server?._id });
-    if (messages.length <= 10) {
+    if (messages.length <= 1000) {
       await saveMessage();
     } else {
       const sorted = await Message.find({ server: server?._id }).sort({
