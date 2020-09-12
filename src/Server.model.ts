@@ -6,6 +6,7 @@ export interface IServer extends mongoose.Document {
   probability: number;
   channel: Snowflake;
   exclude: Snowflake[];
+  submitted: Date;
 }
 
 const Schema = new mongoose.Schema({
@@ -13,6 +14,7 @@ const Schema = new mongoose.Schema({
   probability: { default: 10, type: Number },
   channel: { default: "", type: String },
   exclude: { default: [], type: Array },
+  submitted: { default: new Date(), type: Date },
 });
 
 export const Server = mongoose.model<IServer>("server", Schema);

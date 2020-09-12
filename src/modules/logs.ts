@@ -9,6 +9,9 @@ import { Server } from "../Server.model";
 import { Message as MessageModel } from "../Message.model";
 import path from "path";
 import fs from "fs";
+import dotenv from "dotenv-safe";
+import { type } from "os";
+dotenv.config();
 
 export default class Logs extends Module {
   constructor(client: CookiecordClient) {
@@ -117,5 +120,43 @@ export default class Logs extends Module {
     });
     await MessageModel.deleteMany({ server: guild._id });
     await MessageModel.insertMany(docs);
+  }
+  @command({
+    aliases: ["sub"],
+    description: "Submit your logs to be used as a prefix [Weekly]",
+    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
+  })
+  async submit(message: Message) {
+    if (!message.guild) return;
+
+    const server = await Server.findOne({ id: message.guild.id });
+
+    if (!server) {
+      await message.reply("somethign went wrong");
+      return;
+    }
+
+    const _messages = await MessageModel.find({
+      server: server._id,
+    });
+
+    const messages = _messages.map((message) => message.content);
+
+    const time = 1000 * 60 * 24 * 7;
+    if (new Date().getTime() - server.submitted.getTime() <= time) {
+      message.channel.send("Please wait for 1 week in order to submit again!");
+      return;
+    }
+
+    const filename = path.join(
+      __dirname,
+      `${message.guild.id}-${new Date().getTime()}-messages.txt`
+    );
+    await fs.writeFileSync(filename, messages.join("\n"));
+    await this.client.users.cache.get(process.env.MAIN_DEFAULT_OWNER!)!.send({
+      files: [filename],
+    });
+    fs.unlinkSync(filename);
+    message.reply("Done");
   }
 }
