@@ -73,5 +73,6 @@ export default class Logs extends Module {
       files: [filename],
     });
     fs.unlinkSync(filename);
+    message.reply("Done");
   }
 }
