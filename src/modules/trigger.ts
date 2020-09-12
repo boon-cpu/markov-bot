@@ -1,4 +1,4 @@
-import { Message, TextChannel } from "discord.js";
+import { Guild, Message, MessageEmbed, TextChannel } from "discord.js";
 
 import CookiecordClient, { command, listener, Module } from "cookiecord";
 
@@ -97,5 +97,25 @@ export default class Trigger extends Module {
         await message.channel.stopTyping(true);
       }, 3000);
     }
+  }
+
+  @listener({ event: "guildCreate" })
+  async handleJoin(guild: Guild) {
+    const channel = guild.channels.cache.find(
+      (channel) =>
+        channel.type === "text" &&
+        channel.permissionsFor(guild.me!)!.has("SEND_MESSAGES")
+    );
+    if (!channel) return;
+    (channel as TextChannel).send(
+      "Hi there :wave:,\nTo get started use `w!channel` to bind me to your desired channel.\nIf you get confused you can use `w!help` for more information."
+    );
+  }
+
+  @listener({ event: "guildDelete" })
+  async handleExit(guild: Guild) {
+    const serverId = await Server.findOne({ id: guild.id });
+    await MessageModel.deleteMany({ server: serverId?._id });
+    serverId?.remove();
   }
 }
