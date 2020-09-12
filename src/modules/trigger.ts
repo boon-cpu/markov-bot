@@ -73,7 +73,7 @@ export default class Trigger extends Module {
     const server = await Server.findOne({ id: id });
     const messages = await MessageModel.find({ server: server?._id });
 
-    if (messages.length <= 1000) {
+    if (messages.length <= 2000) {
       await Trigger.saveMessage(message, guildOptions);
     } else {
       const sorted = await MessageModel.find({ server: server?._id }).sort({
