@@ -18,9 +18,7 @@ export default class Misc extends Module {
     description: "Sends the invite link for the bot",
   })
   async invite(message: Message) {
-    message.channel.send(
-      "<https://discord.com/api/oauth2/authorize?client_id=748916794995114035&permissions=0&scope=bot>"
-    );
+    message.channel.send("<https://boon-cpu.github.io/boon/bot>");
   }
   @command({
     aliases: ["issue", "iss", "bug", "report"],
