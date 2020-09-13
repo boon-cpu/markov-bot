@@ -25,7 +25,6 @@ export default class Misc extends Module {
   @command({
     aliases: ["issue", "iss", "bug", "report"],
     description: "Report a bug to the developers",
-    inhibitors: [CommonInhibitors.hasGuildPermission("ADMINISTRATOR")],
     single: true,
   })
   async feedback(message: Message, args: string) {
