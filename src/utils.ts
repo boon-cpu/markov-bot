@@ -1,6 +1,7 @@
 import { Snowflake } from "discord.js";
 import { Server } from "./Server.model";
 import { Message } from "./Message.model";
+const nOrder = 2;
 
 export const config = {
   prefix: "w!",
@@ -15,9 +16,12 @@ export async function wordsAt(guild: Snowflake) {
 
   const _messages = await Message.find({ server: server._id });
 
-  return _messages.map((message) => {
-    return message.content.split(" ")[0];
+  const beginnings: string[] = [];
+  _messages.map((text) => {
+    const beginning = text.content.split(" ").slice(0, nOrder).join(" ");
+    beginnings.push(beginning);
   });
+  return beginnings;
 }
 
 export async function ngram(
@@ -34,49 +38,54 @@ export async function ngram(
 
   const _messages = await Message.find({ server: server._id });
 
-  _messages.map((message) => {
-    const words = message.content.split(" ");
-
-    words.map((word) => {
-      if (!ngrams[word]) {
-        ngrams[word] = [];
+  _messages.forEach((text) => {
+    const word = text.content.split(" ");
+    let words = [];
+    for (let i = 0; i < word.length; i++) {
+      words[i] = word[i] + " " + word[i + 1];
+    }
+    for (let i = 0; i < words.length; i++) {
+      words[i] =
+        words[i].split(" ")[1] === "undefined"
+          ? words[i].split(" ").splice(-1, 1).join(" ")
+          : words[i];
+      if (words[i] === "undefined") continue;
+      if (!ngrams[words[i]]) {
+        ngrams[words[i]] = [];
       }
-      ngrams[word].push(
-        words[words.indexOf(word) + 1] === "undefined"
-          ? ""
-          : words[words.indexOf(word) + 1]
+      ngrams[words[i]].push(
+        words[i].split(" ")[nOrder - 1] === "undefined" ? "" : words[i + nOrder]
       );
-    });
+    }
   });
-
   return await markov(guild, ngrams, isTriggered);
 }
 
 export async function markov(
   guild: Snowflake,
-  ngrams: any,
+  ngrams: Record<string, string[]>,
   isTriggered: Boolean
 ) {
   const beginnings = await wordsAt(guild);
-  if (beginnings.length < 10) {
+  if (beginnings.length < 10 * nOrder) {
     return isTriggered
       ? "Not enough messages in the lexicon. Try talking some more to build up the logs!"
       : "";
   }
 
-  let currentGram: string =
-    beginnings[Math.floor(Math.random() * beginnings.length)];
+  let currentGram = beginnings[~~(Math.random() * beginnings.length)];
   let arrayGram: string[];
-  let result: string = "";
+  let result = "";
   for (let i = 0; i < 30; i++) {
     const possibilities = ngrams[currentGram];
     const next =
       i === 0
         ? currentGram
-        : possibilities[Math.floor(Math.random() * possibilities.length)];
+        : possibilities[~~(Math.random() * possibilities.length)];
     result += next + " ";
     arrayGram = result.split(" ");
-    currentGram = arrayGram[arrayGram.length - 2];
+    currentGram =
+      arrayGram[arrayGram.length - 3] + " " + arrayGram[arrayGram.length - 2];
     currentGram.slice(0, result.length - 1);
     if (typeof ngrams[currentGram] === "undefined") {
       result = result.substring(0, result.lastIndexOf(" "));
