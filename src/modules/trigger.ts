@@ -13,10 +13,10 @@ export default class Trigger extends Module {
   }
 
   private static async saveMessage(message: Message, guildOptions: IServer) {
-    if (message.content.split(" ").length < 2) return;
+    if (message.cleanContent.split(" ").length < 2) return;
 
     await new MessageModel({
-      content: message.content,
+      content: message.cleanContent,
       server: guildOptions._id,
       date: new Date(),
     }).save();
@@ -58,7 +58,7 @@ export default class Trigger extends Module {
     }
 
     const usingSafeMode = process.env.MESSAGE_SAFE_MODE === "on";
-    const startsWithPrefix = message.content.startsWith(config.prefix);
+    const startsWithPrefix = message.cleanContent.startsWith(config.prefix);
 
     if (usingSafeMode && startsWithPrefix) {
       return;
