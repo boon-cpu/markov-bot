@@ -1,9 +1,5 @@
 import { Message } from "discord.js";
-import CookiecordClient, {
-  command,
-  CommonInhibitors,
-  Module,
-} from "cookiecord";
+import CookiecordClient, { command, Module } from "cookiecord";
 import dotenv from "dotenv-safe";
 
 dotenv.config();

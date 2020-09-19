@@ -1,4 +1,4 @@
-import { Guild, Message, MessageEmbed, TextChannel } from "discord.js";
+import { Guild, Message, TextChannel } from "discord.js";
 
 import CookiecordClient, { command, listener, Module } from "cookiecord";
 
@@ -13,8 +13,6 @@ export default class Trigger extends Module {
   }
 
   private static async saveMessage(message: Message, guildOptions: IServer) {
-    if (message.cleanContent.split(" ").length < 2) return;
-
     await new MessageModel({
       content: message.cleanContent,
       server: guildOptions._id,
@@ -50,6 +48,7 @@ export default class Trigger extends Module {
 
   @listener({ event: "message" })
   async handleMessage(message: Message) {
+    if (message.author.bot) return;
     const isDm = message.channel.type === "dm";
     const isSelf = message.author.id === this.client.user?.id;
 

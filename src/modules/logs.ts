@@ -2,7 +2,6 @@ import CookiecordClient, {
   command,
   CommonInhibitors,
   Module,
-  optional,
 } from "cookiecord";
 import { Message } from "discord.js";
 import { Server } from "../Server.model";
@@ -10,7 +9,6 @@ import { Message as MessageModel } from "../Message.model";
 import path from "path";
 import fs from "fs";
 import dotenv from "dotenv-safe";
-import { type } from "os";
 dotenv.config();
 
 export default class Logs extends Module {
