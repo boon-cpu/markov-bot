@@ -109,6 +109,7 @@ export default class Trigger extends Module {
     (channel as TextChannel).send(
       "Hi there :wave:,\nTo get started use `w!channel` to bind me to your desired channel.\nIf you get confused you can use `w!help` for more information."
     );
+    await new Server({ id: guild!.id }).save();
   }
 
   @listener({ event: "guildDelete" })
