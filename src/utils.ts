@@ -1,4 +1,4 @@
-import { Snowflake } from "discord.js";
+import { Message as discordMessage, Snowflake } from "discord.js";
 import { Server } from "./Server.model";
 import { Message } from "./Message.model";
 
@@ -22,11 +22,16 @@ export async function wordsAt(guild: Snowflake) {
 
 export async function ngram(
   guild: Snowflake,
-  options: { isTriggered: Boolean }
+  options: { isTriggered: Boolean },
+  message: discordMessage
 ) {
   const { isTriggered } = options;
   const ngrams: Record<string, string[]> = {};
   const server = await Server.findOne({ id: guild });
+  if (!message.guild) return;
+
+  if (!message.guild.me?.permissionsIn(message.channel).has("SEND_MESSAGES"))
+    return;
 
   if (!server) {
     throw new Error("Could not find server.");

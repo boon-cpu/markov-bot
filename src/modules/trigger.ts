@@ -13,6 +13,7 @@ export default class Trigger extends Module {
   }
 
   private static async saveMessage(message: Message, guildOptions: IServer) {
+    if (message.content.split(" ").length < 2) return;
     await new MessageModel({
       content: message.cleanContent,
       server: guildOptions._id,
@@ -35,11 +36,15 @@ export default class Trigger extends Module {
   async trigger(message: Message) {
     if (!message.guild) return;
 
-    const output = await ngram(message.guild.id, {
-      isTriggered: true,
-    });
+    const output = await ngram(
+      message.guild.id,
+      {
+        isTriggered: true,
+      },
+      message
+    );
 
-    if (output.trim() === "") {
+    if (!output || output.trim() === "") {
       return;
     }
 
@@ -85,9 +90,13 @@ export default class Trigger extends Module {
 
     if (guildOptions.probability >= Math.random() * 100) {
       if (!message.guild) return;
-      const output = await ngram(message.guild.id, { isTriggered: false });
+      const output = await ngram(
+        message.guild.id,
+        { isTriggered: false },
+        message
+      );
 
-      if (output === "" || output === " ") return;
+      if (!output || output.trim() === "") return;
 
       message.channel.startTyping();
 
