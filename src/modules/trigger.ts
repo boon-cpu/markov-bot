@@ -98,12 +98,13 @@ export default class Trigger extends Module {
 
       if (!output || output.trim() === "") return;
 
-      message.channel.startTyping();
+      // await message.channel.startTyping();
 
-      setTimeout(async () => {
-        await message.channel.send(output);
-        await message.channel.stopTyping(true);
-      }, 3000);
+      // setTimeout(async () => {
+      await message.channel.stopTyping(true);
+      await message.channel.send(output);
+      // await message.channel.stopTyping(true);
+      // }, 2000);
     }
   }
 
