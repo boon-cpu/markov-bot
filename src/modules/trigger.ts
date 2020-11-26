@@ -54,10 +54,8 @@ export default class Trigger extends Module {
   @listener({ event: "message" })
   async handleMessage(message: Message) {
     if (message.author.bot) return;
-    const isDm = message.channel.type === "dm";
-    const isSelf = message.author.id === this.client.user?.id;
 
-    if (isDm || isSelf || !message.guild) {
+    if (!message.guild) {
       return;
     }
 
